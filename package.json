@@ -1,0 +1,61 @@
+{
+  "name": "iwa-cli",
+  "description": "An ImmutableWebApp CLI using oclif and cosmiconfig",
+  "version": "0.1.0",
+  "author": "Kristiyan Serafimov (chrispcode)",
+  "bin": {
+    "iwa": "./bin/run"
+  },
+  "bugs": "https://github.com/chrispcode/iwa-cli/issues",
+  "dependencies": {
+    "@oclif/command": "^1",
+    "@oclif/config": "^1",
+    "@oclif/plugin-help": "^2",
+    "cheerio": "^1.0.0-rc.3",
+    "cosmiconfig": "^6.0.0",
+    "lodash.pick": "^4.4.0",
+    "tslib": "^1"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@types/cheerio": "^0.22.17",
+    "@types/lodash.pick": "^4.4.6",
+    "@types/node": "^10",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-oclif": "^3.1",
+    "eslint-config-oclif-typescript": "^0.1",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "ts-node": "^8",
+    "typescript": "^3.3"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib"
+  ],
+  "homepage": "https://github.com/chrispcode/iwa-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "bin": "iwa",
+    "commands": "./lib/commands"
+  },
+  "repository": "chrispcode/iwa-cli",
+  "scripts": {
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+    "test": "echo NO TESTS",
+    "version": "oclif-dev readme && git add README.md"
+  },
+  "types": "lib/index.d.ts"
+}
