@@ -10,6 +10,7 @@ An ImmutableWebApp CLI using oclif and cosmiconfig
 
 <!-- toc -->
 * [Installation](#installation)
+* [or](#or)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
