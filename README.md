@@ -9,23 +9,98 @@ An ImmutableWebApp CLI using oclif and cosmiconfig
 [![License](https://img.shields.io/npm/l/iwa-cli.svg)](https://github.com/chrispcode/iwa-cli/blob/master/package.json)
 
 <!-- toc -->
+* [Installation](#installation)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Usage
-<!-- usage -->
+
+# Installation
+<!-- installation -->
 ```sh-session
-$ npm install -g iwa-cli
-$ iwa COMMAND
-running command...
-$ iwa (-v|--version|version)
-iwa-cli/0.1.0 darwin-x64 node-v10.15.0
-$ iwa --help [COMMAND]
-USAGE
-  $ iwa COMMAND
-...
+yarn add --dev iwa-cli
+
+# or
+
+npm install --save-dev iwa-cli
 ```
-<!-- usagestop -->
+<!-- installationstop -->
+
+# Usage
+
+## Generate
+1. Create a `.iwarc` file in the root of your project.
+The format of this file should look like this.
+
+```json
+{
+  "env": {
+    "production": {
+      "KEY": "VALUE_PRODUCTION"
+    },
+    "development": {
+      "KEY": "VALUE_DEVELOPMENT"
+    }
+  }
+}
+```
+* The `production` environment cannot be omitted!
+* Specify as many environments as you need! In this case we have 2 (one for production and one for development)
+* Always specify the same keys in all environments!
+
+2. Create a script tag with `id="iwa"` in your index.html or template.index.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <body>
+    <div id="menu"></div>
+    <main id="root"></main>
+    <div id="footer"></div>
+
+    <script id="iwa"></script> <!-- This line here is the one -->
+  </body>
+</html>
+```
+
+* Make sure you don't have anything it, because it will get erased!
+* Make sure it is placed before all you bundles!
+
+3. Run the `generate` command
+
+```sh-session
+iwa generate --env=production ./example/index.html  # or the location where the file is located
+```
+
+The command will inject the configuration in the script tag:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <body>
+    <div id="menu"></div>
+    <main id="root"></main>
+    <div id="footer"></div>
+    <script id="iwa">window.env = {"KEY":"VALUE_PRODUCTION"}</script>
+  </body>
+</html>
+```
+
+## Override
+You can override a variable with process.env variables:
+
+```sh-session
+KEY="VALUE_PROCESS" iwa generate ./example/index.html
+```
+
+## Remove
+You can also erase the configuration from a file, by using the `remove` command
+
+```sh-session
+iwa remove ./example/index.html
+```
+
 # Commands
 <!-- commands -->
 * [`iwa generate [INPUT] [OUTPUT]`](#iwa-generate-input-output)
