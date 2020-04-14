@@ -1,6 +1,8 @@
 iwa-cli
 =======
 
+![IWA](https://user-images.githubusercontent.com/7029482/79209827-35942a80-7e44-11ea-908a-0a9d54f62779.png)
+
 An ImmutableWebApp CLI using oclif and cosmiconfig
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
