@@ -12,7 +12,6 @@ An ImmutableWebApp CLI using oclif and cosmiconfig
 
 <!-- toc -->
 * [Installation](#installation)
-* [or](#or)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -21,8 +20,6 @@ An ImmutableWebApp CLI using oclif and cosmiconfig
 <!-- installation -->
 ```sh-session
 yarn add --dev iwa-cli
-
-# or
 
 npm install --save-dev iwa-cli
 ```
@@ -127,7 +124,7 @@ ALIASES
   $ iwa g
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.1.0/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.1.2/src/commands/generate.ts)_
 
 ## `iwa remove [INPUT]`
 
@@ -145,5 +142,5 @@ ALIASES
   $ iwa rm
 ```
 
-_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.1.0/src/commands/remove.ts)_
+_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.1.2/src/commands/remove.ts)_
 <!-- commandsstop -->

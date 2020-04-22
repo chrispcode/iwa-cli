@@ -3,9 +3,10 @@ import { cosmiconfig } from 'cosmiconfig';
 
 import fs from 'fs';
 import path from 'path';
-import { isNull } from 'util';
-import { load } from 'cheerio';
+import chalk from 'chalk';
 import pick from 'lodash.pick';
+import { load } from 'cheerio';
+import { isNull } from 'util';
 
 const explorer = cosmiconfig('iwa');
 
@@ -34,11 +35,17 @@ class GenerateCommand extends Command {
     const cosmic = await explorer.search();
 
     if (isNull(cosmic)) {
-      this.log('Could not find a config file!');
+      this.log(
+        chalk.redBright`Could not find a config file!`,
+      );
       return {};
     }
 
-    const cosmicData = cosmic.config.env[flags.env];
+    const env = process.env.ENV || flags.env;
+
+    this.log(chalk.cyanBright(`Specified environment - "${env}".`));
+
+    const cosmicData = cosmic.config.env[env];
     const processOverrideData = pick(
       process.env,
       Object.keys(cosmicData),
@@ -60,6 +67,7 @@ class GenerateCommand extends Command {
     const inputLocation = path.join(process.cwd(), input);
     const outputLocation = path.join(process.cwd(), output);
 
+
     const inputContent = fs.readFileSync(
       inputLocation, {
         encoding: 'utf-8',
@@ -80,6 +88,8 @@ class GenerateCommand extends Command {
       outputLocation,
       outputContent,
     );
+
+    this.log(chalk.greenBright`File with injected configuration was generated!`);
   }
 }
 
