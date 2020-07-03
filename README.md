@@ -34,18 +34,21 @@ The format of this file should look like this.
 ```json
 {
   "env": {
+    "all" : {
+      "COMMON_ATTRIBUTE": "DEFAULT_VALUE", 
+    },
     "production": {
       "KEY": "VALUE_PRODUCTION"
     },
     "development": {
-      "KEY": "VALUE_DEVELOPMENT"
+      "KEY": "VALUE_DEVELOPMENT",
+      "COMMON_ATTRIBUTE": "DEVELOPMENT_SPESIFIC_VALUE", 
     }
   }
 }
 ```
-* The `production` environment cannot be omitted!
+* The `all` and `production` environment cannot be omitted!
 * Specify as many environments as you need! In this case we have 2 (one for production and one for development)
-* Always specify the same keys in all environments!
 
 2. Create a script tag with `id="iwa"` in your index.html or template.index.html
 
@@ -82,7 +85,7 @@ The command will inject the configuration in the script tag:
     <div id="menu"></div>
     <main id="root"></main>
     <div id="footer"></div>
-    <script id="iwa">window.env = {"KEY":"VALUE_PRODUCTION"}</script>
+    <script id="iwa">window.env = {"COMMON_ATTRIBUTE": "DEFAULT_VALUE", "KEY":"VALUE_PRODUCTION"}</script>
   </body>
 </html>
 ```
@@ -118,6 +121,7 @@ OPTIONS
   -e, --env=env  [default: production]
   -h, --help     show CLI help
   -v, --version  show CLI version
+  -d, --verbose  prints iwa output configuration 
 
 ALIASES
   $ iwa gen
