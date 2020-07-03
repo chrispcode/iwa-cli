@@ -13,31 +13,27 @@ const explorer = cosmiconfig('iwa');
 class GenerateCommand extends Command {
   static aliases = ['gen', 'g'];
 
-  static description = 'Generates a HTML file, where window.env configuration is injected';
+  static description =
+    'Generates a HTML file, where window.env configuration is injected';
 
   static flags = {
     env: flagTypes.string({
       char: 'e',
       default: 'production',
     }),
-
+    verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
-  }
+  };
 
-  static args = [
-    { name: 'input' },
-    { name: 'output' },
-  ]
+  static args = [{ name: 'input' }, { name: 'output' }];
 
   async getData() {
     const { flags } = this.parse(GenerateCommand);
     const cosmic = await explorer.search();
 
     if (isNull(cosmic)) {
-      this.log(
-        chalk.redBright`Could not find a config file!`,
-      );
+      this.log(chalk.redBright`Could not find a config file!`);
       return {};
     }
 
@@ -45,16 +41,21 @@ class GenerateCommand extends Command {
 
     this.log(chalk.cyanBright(`Specified environment - "${env}".`));
 
+    const cosmicDefaultData = cosmic.config.env.all || {};
     const cosmicData = cosmic.config.env[env];
-    const processOverrideData = pick(
-      process.env,
-      Object.keys(cosmicData),
-    );
-
-    return {
+    const processOverrideData = pick(process.env, Object.keys(cosmicData));
+    const iwaConfig = {
+      ...cosmicDefaultData,
       ...cosmicData,
       ...processOverrideData,
     };
+    if (flags.verbose) {
+      this.log(chalk.cyanBright('Uses verbose output '));
+      this.log(chalk.cyanBright('Generated config:'));
+      this.log(chalk.cyanBright(JSON.stringify(iwaConfig, null, 4)));
+    }
+
+    return iwaConfig;
   }
 
   async run() {
@@ -67,30 +68,24 @@ class GenerateCommand extends Command {
     const inputLocation = path.join(process.cwd(), input);
     const outputLocation = path.join(process.cwd(), output);
 
+    const inputContent = fs.readFileSync(inputLocation, {
+      encoding: 'utf-8',
+    });
 
-    const inputContent = fs.readFileSync(
-      inputLocation, {
-        encoding: 'utf-8',
-      },
-    );
-
-    const $ = load(
-      inputContent, {
-        _useHtmlParser2: true,
-      },
-    );
+    const $ = load(inputContent, {
+      _useHtmlParser2: true,
+    });
 
     $('#iwa').html(`window.env = ${JSON.stringify(data)}`);
 
     const outputContent = $.root().html();
 
-    fs.writeFileSync(
-      outputLocation,
-      outputContent,
-    );
+    fs.writeFileSync(outputLocation, outputContent);
 
-    this.log(chalk.greenBright`File with injected configuration was generated!`);
+    this.log(
+      chalk.greenBright`File with injected configuration was generated!`,
+    );
   }
 }
 
-export = GenerateCommand
+export = GenerateCommand;
