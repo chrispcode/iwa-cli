@@ -122,13 +122,14 @@ OPTIONS
   -e, --env=env  [default: production]
   -h, --help     show CLI help
   -v, --version  show CLI version
+  --noFormat     Don't format the html file
 
 ALIASES
   $ iwa gen
   $ iwa g
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.2.0/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.3.0/src/commands/generate.ts)_
 
 ## `iwa remove [INPUT]`
 
@@ -146,5 +147,5 @@ ALIASES
   $ iwa rm
 ```
 
-_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.2.0/src/commands/remove.ts)_
+_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.3.0/src/commands/remove.ts)_
 <!-- commandsstop -->

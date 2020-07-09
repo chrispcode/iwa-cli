@@ -21,6 +21,10 @@ class GenerateCommand extends Command {
       char: 'e',
       default: 'production',
     }),
+    noFormat: flagTypes.boolean({
+      default: false,
+      description: 'Don\'t format the html file',
+    }),
     verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
@@ -59,7 +63,7 @@ class GenerateCommand extends Command {
   }
 
   async run() {
-    const { args } = this.parse(GenerateCommand);
+    const { args, flags } = this.parse(GenerateCommand);
 
     const { input } = args;
     const output = args.output || input;
@@ -72,13 +76,23 @@ class GenerateCommand extends Command {
       encoding: 'utf-8',
     });
 
-    const $ = load(inputContent, {
-      _useHtmlParser2: true,
-    });
+    let outputContent: string | null = '';
 
-    $('#iwa').html(`window.env = ${JSON.stringify(data)}`);
+    if (flags.noFormat) {
+      outputContent = inputContent.replace(
+        '<script id="iwa"></script>',
+        `<script id="iwa">window.env = ${JSON.stringify(data)}</script>`,
+      );
+    } else {
+      const $ = load(inputContent, {
+        _useHtmlParser2: true,
+      });
 
-    const outputContent = $.root().html();
+      $('#iwa').html(`window.env = ${JSON.stringify(data)}`);
+
+      outputContent = $.root().html();
+    }
+
 
     fs.writeFileSync(outputLocation, outputContent);
 

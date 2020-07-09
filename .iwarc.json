@@ -1,0 +1,13 @@
+{
+  "env": {
+    "production": {
+      "KEY": "VALUE_PRODUCTION"
+    },
+    "development": {
+      "KEY": "VALUE_DEVELOPMENT"
+    },
+    "client-t": {
+      "KEY": "VALUE_CLIENT_T"
+    }
+  }
+}

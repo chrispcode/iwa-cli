@@ -1,7 +1,7 @@
 {
   "name": "iwa-cli",
   "description": "An ImmutableWebApp CLI using oclif and cosmiconfig",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Kristiyan Serafimov (chrispcode)",
   "bin": {
     "iwa": "./bin/run"
