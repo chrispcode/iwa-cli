@@ -1,7 +1,8 @@
 import { Command, flags as flagTypes } from '@oclif/command';
-import path from 'path';
+
 import fs from 'fs';
 import { load } from 'cheerio';
+import path from 'path';
 
 class RemoveCommand extends Command {
   static aliases = ['rm'];
@@ -11,6 +12,10 @@ class RemoveCommand extends Command {
   static flags = {
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
+    noFormat: flagTypes.boolean({
+      default: false,
+      description: 'Don\'t format the html file',
+    }),
   }
 
   static args = [
@@ -18,7 +23,7 @@ class RemoveCommand extends Command {
   ]
 
   async run() {
-    const { args } = this.parse(RemoveCommand);
+    const { args, flags } = this.parse(RemoveCommand);
     const { input } = args;
 
     const inputLocation = path.join(process.cwd(), input);
@@ -29,15 +34,25 @@ class RemoveCommand extends Command {
       },
     );
 
-    const $ = load(
-      inputContent, {
-        _useHtmlParser2: true,
-      },
-    );
+    let outputContent: string | null = '';
 
-    $('#iwa').html('');
+    if (flags.noFormat) {
+      outputContent = inputContent.replace(
+        /<script id="iwa">([\s\S]*?)<\/script>/gm,
+        '<script id="iwa"></script>',
+      );
+    } else {
+      const $ = load(
+        inputContent, {
+          _useHtmlParser2: true,
+        },
+      );
 
-    const outputContent = $.root().html();
+      $('#iwa').html('');
+
+      outputContent = $.root().html();
+    }
+
 
     fs.writeFileSync(
       inputLocation,
