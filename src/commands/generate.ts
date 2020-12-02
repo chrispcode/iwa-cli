@@ -1,12 +1,12 @@
 import { Command, flags as flagTypes } from '@oclif/command';
-import { cosmiconfig } from 'cosmiconfig';
 
-import fs from 'fs';
-import path from 'path';
 import chalk from 'chalk';
-import pick from 'lodash.pick';
-import { load } from 'cheerio';
+import { cosmiconfig } from 'cosmiconfig';
+import fs from 'fs';
 import { isNull } from 'util';
+import { load } from 'cheerio';
+import path from 'path';
+import pick from 'lodash.pick';
 
 const explorer = cosmiconfig('iwa');
 
@@ -80,7 +80,7 @@ class GenerateCommand extends Command {
 
     if (flags.noFormat) {
       outputContent = inputContent.replace(
-        '<script id="iwa"></script>',
+        /<script id="iwa">([\s\S]*?)<\/script>/gm,
         `<script id="iwa">window.env = ${JSON.stringify(data)}</script>`,
       );
     } else {
