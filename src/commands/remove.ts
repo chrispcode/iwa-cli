@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 
 import { Command, flags as flagTypes } from '@oclif/command';
-import { load } from 'cheerio';
 
 import { replaceIwaContent } from '../utils/IwaContentReplacer';
 
@@ -14,10 +13,6 @@ class RemoveCommand extends Command {
   static flags = {
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
-    noFormat: flagTypes.boolean({
-      default: false,
-      description: 'Don\'t format the html file',
-    }),
   }
 
   static args = [
@@ -25,7 +20,7 @@ class RemoveCommand extends Command {
   ]
 
   async run() {
-    const { args, flags } = this.parse(RemoveCommand);
+    const { args } = this.parse(RemoveCommand);
     const { input } = args;
 
     const inputLocation = path.join(process.cwd(), input);
@@ -36,23 +31,7 @@ class RemoveCommand extends Command {
       },
     );
 
-    let outputContent: string | null = '';
-
-    if (flags.noFormat) {
-      outputContent = replaceIwaContent(inputContent, '');
-    } else {
-      const $ = load(
-        inputContent, {
-          _useHtmlParser2: true,
-        },
-      );
-
-      $('#iwa').html('');
-
-      outputContent = $.root().html();
-    }
-
-
+    const outputContent = replaceIwaContent(inputContent, '');
     fs.writeFileSync(
       inputLocation,
       outputContent,

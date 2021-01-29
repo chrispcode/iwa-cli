@@ -4,7 +4,6 @@ import { isNull } from 'util';
 
 import { Command, flags as flagTypes } from '@oclif/command';
 import chalk from 'chalk';
-import { load } from 'cheerio';
 import { cosmiconfig } from 'cosmiconfig';
 import pick from 'lodash.pick';
 
@@ -23,10 +22,6 @@ class GenerateCommand extends Command {
     env: flagTypes.string({
       char: 'e',
       default: 'production',
-    }),
-    noFormat: flagTypes.boolean({
-      default: false,
-      description: 'Don\'t format the html file',
     }),
     verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
@@ -66,7 +61,7 @@ class GenerateCommand extends Command {
   }
 
   async run() {
-    const { args, flags } = this.parse(GenerateCommand);
+    const { args } = this.parse(GenerateCommand);
 
     const { input } = args;
     const output = args.output || input;
@@ -79,21 +74,7 @@ class GenerateCommand extends Command {
       encoding: 'utf-8',
     });
 
-    let outputContent: string | null = '';
-
-    if (flags.noFormat) {
-      outputContent = replaceIwaContent(inputContent, data);
-    } else {
-      const $ = load(inputContent, {
-        _useHtmlParser2: true,
-      });
-
-      $('#iwa').html(`window.env = ${JSON.stringify(data)}`);
-
-      outputContent = $.root().html();
-    }
-
-
+    const outputContent = replaceIwaContent(inputContent, data);
     fs.writeFileSync(outputLocation, outputContent);
 
     this.log(

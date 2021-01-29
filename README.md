@@ -122,7 +122,6 @@ OPTIONS
   -e, --env=env  [default: production]
   -h, --help     show CLI help
   -v, --version  show CLI version
-  --noFormat     Don't format the html file
 
 ALIASES
   $ iwa gen
@@ -142,7 +141,6 @@ USAGE
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
-  --noFormat     Don't format the html file
 
 ALIASES
   $ iwa rm
