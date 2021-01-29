@@ -59,7 +59,7 @@
     "lint:fix": "eslint . --ext .ts --config .eslintrc --fix",
     "version": "oclif-dev readme && git add README.md",
     "posttest": "npm run lint",
-    "test:cli:gen": "node ./bin/run gen example/index.html --random",
+    "test:cli:gen": "node ./bin/run gen example/index.html",
     "test:cli:rm": "node ./bin/run rm example/index.html"
   },
   "types": "lib/index.d.ts"
