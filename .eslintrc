@@ -3,5 +3,25 @@
   "extends": ["airbnb"],
   "plugins": [
     "@typescript-eslint"
-  ]
+  ],
+  "rules": {
+     "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "env": {
+    "jest": true
+  }
 }
