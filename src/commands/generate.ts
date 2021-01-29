@@ -1,14 +1,17 @@
-import { Command, flags as flagTypes } from '@oclif/command';
-
-import chalk from 'chalk';
-import { cosmiconfig } from 'cosmiconfig';
 import fs from 'fs';
-import { isNull } from 'util';
-import { load } from 'cheerio';
 import path from 'path';
+import { isNull } from 'util';
+
+import { Command, flags as flagTypes } from '@oclif/command';
+import chalk from 'chalk';
+import { load } from 'cheerio';
+import { cosmiconfig } from 'cosmiconfig';
 import pick from 'lodash.pick';
 
+import { replaceIwaContent } from '../utils/IwaContentReplacer';
+
 const explorer = cosmiconfig('iwa');
+
 
 class GenerateCommand extends Command {
   static aliases = ['gen', 'g'];
@@ -79,10 +82,7 @@ class GenerateCommand extends Command {
     let outputContent: string | null = '';
 
     if (flags.noFormat) {
-      outputContent = inputContent.replace(
-        /<script id="iwa">([\s\S]*?)<\/script>/gm,
-        `<script id="iwa">window.env = ${JSON.stringify(data)}</script>`,
-      );
+      outputContent = replaceIwaContent(inputContent, data);
     } else {
       const $ = load(inputContent, {
         _useHtmlParser2: true,

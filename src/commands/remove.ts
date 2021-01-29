@@ -1,8 +1,10 @@
-import { Command, flags as flagTypes } from '@oclif/command';
-
 import fs from 'fs';
-import { load } from 'cheerio';
 import path from 'path';
+
+import { Command, flags as flagTypes } from '@oclif/command';
+import { load } from 'cheerio';
+
+import { replaceIwaContent } from '../utils/IwaContentReplacer';
 
 class RemoveCommand extends Command {
   static aliases = ['rm'];
@@ -37,10 +39,7 @@ class RemoveCommand extends Command {
     let outputContent: string | null = '';
 
     if (flags.noFormat) {
-      outputContent = inputContent.replace(
-        /<script id="iwa">([\s\S]*?)<\/script>/gm,
-        '<script id="iwa"></script>',
-      );
+      outputContent = replaceIwaContent(inputContent, '');
     } else {
       const $ = load(
         inputContent, {
