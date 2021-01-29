@@ -29,10 +29,9 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
-      - name: Test
+      - name: Lint
         run: yarn lint
   test:
     name: Test
@@ -59,7 +58,6 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Test
