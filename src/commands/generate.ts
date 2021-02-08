@@ -1,16 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 import { isNull } from 'util';
-
-import { Command, flags as flagTypes } from '@oclif/command';
-import chalk from 'chalk';
-import { cosmiconfig } from 'cosmiconfig';
 import pick from 'lodash.pick';
+import chalk from 'chalk';
 
-import { replaceIwaContent } from '../utils/IwaContentReplacer';
+import { cosmiconfig } from 'cosmiconfig';
+import { Command, flags as flagTypes } from '@oclif/command';
+
+import { replaceIWA } from '../helpers';
 
 const explorer = cosmiconfig('iwa');
-
 
 class GenerateCommand extends Command {
   static aliases = ['gen', 'g'];
@@ -23,6 +22,9 @@ class GenerateCommand extends Command {
       char: 'e',
       default: 'production',
     }),
+    config: flagTypes.string({
+      char: 'c',
+    }),
     verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
@@ -32,7 +34,7 @@ class GenerateCommand extends Command {
 
   async getData() {
     const { flags } = this.parse(GenerateCommand);
-    const cosmic = await explorer.search();
+    const cosmic = await explorer.search(flags.config);
 
     if (isNull(cosmic)) {
       this.log(chalk.redBright`Could not find a config file!`);
@@ -51,6 +53,7 @@ class GenerateCommand extends Command {
       ...cosmicData,
       ...processOverrideData,
     };
+
     if (flags.verbose) {
       this.log(chalk.cyanBright('Uses verbose output '));
       this.log(chalk.cyanBright('Generated config:'));
@@ -70,11 +73,13 @@ class GenerateCommand extends Command {
     const inputLocation = path.join(process.cwd(), input);
     const outputLocation = path.join(process.cwd(), output);
 
-    const inputContent = fs.readFileSync(inputLocation, {
-      encoding: 'utf-8',
-    });
+    const inputContent = fs.readFileSync(
+      inputLocation, {
+        encoding: 'utf-8',
+      },
+    );
 
-    const outputContent = replaceIwaContent(inputContent, data);
+    const outputContent = replaceIWA(inputContent, data);
     fs.writeFileSync(outputLocation, outputContent);
 
     this.log(

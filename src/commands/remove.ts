@@ -1,14 +1,16 @@
 import fs from 'fs';
 import path from 'path';
+import {
+  Command,
+  flags as flagTypes,
+} from '@oclif/command';
 
-import { Command, flags as flagTypes } from '@oclif/command';
-
-import { replaceIwaContent } from '../utils/IwaContentReplacer';
+import { removeIWA } from '../helpers';
 
 class RemoveCommand extends Command {
   static aliases = ['rm'];
 
-  static description = 'Removes injected configuration from a HTML file';
+  static description = 'Removes injected configuration from an HTML file';
 
   static flags = {
     version: flagTypes.version({ char: 'v' }),
@@ -31,7 +33,8 @@ class RemoveCommand extends Command {
       },
     );
 
-    const outputContent = replaceIwaContent(inputContent, '');
+    const outputContent = removeIWA(inputContent);
+
     fs.writeFileSync(
       inputLocation,
       outputContent,
