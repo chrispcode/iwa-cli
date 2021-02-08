@@ -4,6 +4,7 @@ import {
   Command,
   flags as flagTypes,
 } from '@oclif/command';
+import chalk from 'chalk';
 
 import { removeIWA } from '../helpers';
 
@@ -35,10 +36,16 @@ class RemoveCommand extends Command {
 
     const outputContent = removeIWA(inputContent);
 
-    fs.writeFileSync(
-      inputLocation,
-      outputContent,
-    );
+    if (outputContent === inputContent) {
+      this.log(chalk.yellowBright`No IWA configuration to remove!`);
+    } else {
+      fs.writeFileSync(
+        inputLocation,
+        outputContent,
+      );
+
+      this.log(chalk.yellowBright`IWA configuration removed from file!`);
+    }
   }
 }
 

@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import { isNull } from 'util';
 import pick from 'lodash.pick';
 import chalk from 'chalk';
 
@@ -24,6 +23,7 @@ class GenerateCommand extends Command {
     }),
     config: flagTypes.string({
       char: 'c',
+      description: 'Location to look for iwa configuration',
     }),
     verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
@@ -36,7 +36,7 @@ class GenerateCommand extends Command {
     const { flags } = this.parse(GenerateCommand);
     const cosmic = await explorer.search(flags.config);
 
-    if (isNull(cosmic)) {
+    if (!cosmic) {
       this.log(chalk.redBright`Could not find a config file!`);
       return {};
     }
@@ -47,6 +47,7 @@ class GenerateCommand extends Command {
 
     const cosmicDefaultData = cosmic.config.env.all || {};
     const cosmicData = cosmic.config.env[env];
+
     const processOverrideData = pick(process.env, Object.keys(cosmicData));
     const iwaConfig = {
       ...cosmicDefaultData,

@@ -3,6 +3,13 @@
   "description": "An ImmutableWebApp CLI using oclif and cosmiconfig",
   "version": "0.4.0",
   "author": "Kristiyan Serafimov (chrispcode)",
+  "repository": "chrispcode/iwa-cli",
+  "files": ["/bin", "/lib"],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "homepage": "https://github.com/chrispcode/iwa-cli",
+  "keywords": ["oclif", "iwa", "ImmutableWebApps", "cli"],
+  "license": "MIT",
   "bin": {
     "iwa": "./bin/run"
   },
@@ -20,7 +27,7 @@
     "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.26.0",
+    "@oclif/dev-cli": "^1.14.0",
     "@types/common-tags": "^1.8.0",
     "@types/lodash.pick": "^4.4.6",
     "@types/node": "^14.14.25",
@@ -41,21 +48,10 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "files": [
-    "/bin",
-    "/lib"
-  ],
-  "homepage": "https://github.com/chrispcode/iwa-cli",
-  "keywords": [
-    "oclif"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
   "oclif": {
     "bin": "iwa",
     "commands": "./lib/commands"
   },
-  "repository": "chrispcode/iwa-cli",
   "scripts": {
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "jest",
@@ -64,6 +60,5 @@
     "version": "oclif-dev readme && git add README.md",
     "test:cli:gen": "node ./bin/run gen example/index.html",
     "test:cli:rm": "node ./bin/run rm example/index.html"
-  },
-  "types": "lib/index.d.ts"
+  }
 }
