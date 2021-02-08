@@ -129,7 +129,7 @@ ALIASES
   $ iwa g
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.4.0/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v1.0.0/src/commands/generate.ts)_
 
 ## `iwa remove [INPUT]`
 
@@ -147,5 +147,5 @@ ALIASES
   $ iwa rm
 ```
 
-_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.4.0/src/commands/remove.ts)_
+_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v1.0.0/src/commands/remove.ts)_
 <!-- commandsstop -->
