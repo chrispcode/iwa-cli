@@ -1,17 +1,14 @@
 import fs from 'fs';
 import path from 'path';
-import { isNull } from 'util';
-
-import { Command, flags as flagTypes } from '@oclif/command';
-import chalk from 'chalk';
-import { load } from 'cheerio';
-import { cosmiconfig } from 'cosmiconfig';
 import pick from 'lodash.pick';
+import chalk from 'chalk';
 
-import { replaceIwaContent } from '../utils/IwaContentReplacer';
+import { cosmiconfig } from 'cosmiconfig';
+import { Command, flags as flagTypes } from '@oclif/command';
+
+import { replaceIWA } from '../helpers';
 
 const explorer = cosmiconfig('iwa');
-
 
 class GenerateCommand extends Command {
   static aliases = ['gen', 'g'];
@@ -24,9 +21,9 @@ class GenerateCommand extends Command {
       char: 'e',
       default: 'production',
     }),
-    noFormat: flagTypes.boolean({
-      default: false,
-      description: 'Don\'t format the html file',
+    config: flagTypes.string({
+      char: 'c',
+      description: 'Location to look for iwa configuration',
     }),
     verbose: flagTypes.boolean({ char: 'd' }),
     version: flagTypes.version({ char: 'v' }),
@@ -37,9 +34,9 @@ class GenerateCommand extends Command {
 
   async getData() {
     const { flags } = this.parse(GenerateCommand);
-    const cosmic = await explorer.search();
+    const cosmic = await explorer.search(flags.config);
 
-    if (isNull(cosmic)) {
+    if (!cosmic) {
       this.log(chalk.redBright`Could not find a config file!`);
       return {};
     }
@@ -50,12 +47,14 @@ class GenerateCommand extends Command {
 
     const cosmicDefaultData = cosmic.config.env.all || {};
     const cosmicData = cosmic.config.env[env];
+
     const processOverrideData = pick(process.env, Object.keys(cosmicData));
     const iwaConfig = {
       ...cosmicDefaultData,
       ...cosmicData,
       ...processOverrideData,
     };
+
     if (flags.verbose) {
       this.log(chalk.cyanBright('Uses verbose output '));
       this.log(chalk.cyanBright('Generated config:'));
@@ -66,7 +65,7 @@ class GenerateCommand extends Command {
   }
 
   async run() {
-    const { args, flags } = this.parse(GenerateCommand);
+    const { args } = this.parse(GenerateCommand);
 
     const { input } = args;
     const output = args.output || input;
@@ -75,25 +74,13 @@ class GenerateCommand extends Command {
     const inputLocation = path.join(process.cwd(), input);
     const outputLocation = path.join(process.cwd(), output);
 
-    const inputContent = fs.readFileSync(inputLocation, {
-      encoding: 'utf-8',
-    });
+    const inputContent = fs.readFileSync(
+      inputLocation, {
+        encoding: 'utf-8',
+      },
+    );
 
-    let outputContent: string | null = '';
-
-    if (flags.noFormat) {
-      outputContent = replaceIwaContent(inputContent, data);
-    } else {
-      const $ = load(inputContent, {
-        _useHtmlParser2: true,
-      });
-
-      $('#iwa').html(`window.env = ${JSON.stringify(data)}`);
-
-      outputContent = $.root().html();
-    }
-
-
+    const outputContent = replaceIWA(inputContent, data);
     fs.writeFileSync(outputLocation, outputContent);
 
     this.log(
