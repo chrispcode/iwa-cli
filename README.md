@@ -118,22 +118,22 @@ USAGE
   $ iwa generate [INPUT] [OUTPUT]
 
 OPTIONS
+  -c, --config=config  Location to look for iwa configuration
   -d, --verbose
-  -e, --env=env  [default: production]
-  -h, --help     show CLI help
-  -v, --version  show CLI version
-  --noFormat     Don't format the html file
+  -e, --env=env        [default: production]
+  -h, --help           show CLI help
+  -v, --version        show CLI version
 
 ALIASES
   $ iwa gen
   $ iwa g
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.3.0/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/chrispcode/iwa-cli/blob/v0.4.0/src/commands/generate.ts)_
 
 ## `iwa remove [INPUT]`
 
-Removes injected configuration from a HTML file
+Removes injected configuration from an HTML file
 
 ```
 USAGE
@@ -142,11 +142,10 @@ USAGE
 OPTIONS
   -h, --help     show CLI help
   -v, --version  show CLI version
-  --noFormat     Don't format the html file
 
 ALIASES
   $ iwa rm
 ```
 
-_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.3.0/src/commands/remove.ts)_
+_See code: [src/commands/remove.ts](https://github.com/chrispcode/iwa-cli/blob/v0.4.0/src/commands/remove.ts)_
 <!-- commandsstop -->

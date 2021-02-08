@@ -1,21 +1,21 @@
-import { Command, flags as flagTypes } from '@oclif/command';
-
 import fs from 'fs';
-import { load } from 'cheerio';
 import path from 'path';
+import {
+  Command,
+  flags as flagTypes,
+} from '@oclif/command';
+import chalk from 'chalk';
+
+import { removeIWA } from '../helpers';
 
 class RemoveCommand extends Command {
   static aliases = ['rm'];
 
-  static description = 'Removes injected configuration from a HTML file';
+  static description = 'Removes injected configuration from an HTML file';
 
   static flags = {
     version: flagTypes.version({ char: 'v' }),
     help: flagTypes.help({ char: 'h' }),
-    noFormat: flagTypes.boolean({
-      default: false,
-      description: 'Don\'t format the html file',
-    }),
   }
 
   static args = [
@@ -23,7 +23,7 @@ class RemoveCommand extends Command {
   ]
 
   async run() {
-    const { args, flags } = this.parse(RemoveCommand);
+    const { args } = this.parse(RemoveCommand);
     const { input } = args;
 
     const inputLocation = path.join(process.cwd(), input);
@@ -34,30 +34,18 @@ class RemoveCommand extends Command {
       },
     );
 
-    let outputContent: string | null = '';
+    const outputContent = removeIWA(inputContent);
 
-    if (flags.noFormat) {
-      outputContent = inputContent.replace(
-        /<script id="iwa">([\s\S]*?)<\/script>/gm,
-        '<script id="iwa"></script>',
-      );
+    if (outputContent === inputContent) {
+      this.log(chalk.yellowBright`No IWA configuration to remove!`);
     } else {
-      const $ = load(
-        inputContent, {
-          _useHtmlParser2: true,
-        },
+      fs.writeFileSync(
+        inputLocation,
+        outputContent,
       );
 
-      $('#iwa').html('');
-
-      outputContent = $.root().html();
+      this.log(chalk.yellowBright`IWA configuration removed from file!`);
     }
-
-
-    fs.writeFileSync(
-      inputLocation,
-      outputContent,
-    );
   }
 }
 
