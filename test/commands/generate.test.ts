@@ -3,29 +3,10 @@ import fs from 'fs';
 import { html } from 'common-tags';
 
 import GenerateCommand from '../../src/commands/generate';
+import { resetEntryFile } from './helpers';
 
 const entryFilePath = path.join(__dirname, '../index.html');
 const iwarcFile = path.join(__dirname, '../.iwarc.json');
-
-function resetEntryFile() {
-  const baseState = html`
-    <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-      </head>
-      <body>
-        <script id="iwa"></script>
-      </body>
-    </html>
-  `;
-
-  fs.writeFileSync(
-    entryFilePath,
-    baseState,
-  );
-}
 
 describe('iwa generate', () => {
   beforeEach(() => {
