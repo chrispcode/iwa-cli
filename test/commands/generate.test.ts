@@ -134,7 +134,7 @@ describe('iwa generate', () => {
     const overrideValue = 'OVERRIDE_VALUE';
     process.env.KEY = overrideValue;
     await GenerateCommand.run(['./test/index.html', '-c', iwarcFile, '-e', 'production']);
-  
+
     const result = fs.readFileSync(entryFilePath, {
       encoding: 'utf-8',
     });

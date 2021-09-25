@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import pick from 'lodash.pick';
 import chalk from 'chalk';
 
 import { cosmiconfig } from 'cosmiconfig';
 import { Command, flags as flagTypes } from '@oclif/command';
 
-import { replaceIWA } from '../helpers';
+import { replaceIWA, getOverridesFromProcessEnv } from '../helpers';
 
 const explorer = cosmiconfig('iwa');
 
@@ -48,7 +47,7 @@ class GenerateCommand extends Command {
     const cosmicDefaultData = cosmic.config.env.all || {};
     const cosmicData = cosmic.config.env[env];
 
-    const processOverrideData = pick(process.env, Object.keys(cosmicData));
+    const processOverrideData = getOverridesFromProcessEnv(cosmicData);
     const iwaConfig = {
       ...cosmicDefaultData,
       ...cosmicData,
