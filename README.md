@@ -106,8 +106,30 @@ iwa remove ./example/index.html
 
 # Commands
 <!-- commands -->
+* [`iwa check [INPUT]`](#iwa-check-input)
 * [`iwa generate [INPUT] [OUTPUT]`](#iwa-generate-input-output)
 * [`iwa remove [INPUT]`](#iwa-remove-input)
+
+## `iwa check [INPUT]`
+
+Checks HTML file for injected iwa config, useful in a pre-commit hook to prevent commiting injected iwa-config.
+
+```
+USAGE
+  $ iwa check [INPUT]
+
+OPTIONS
+  -d, --verbose
+  -h, --help      show CLI help
+  -s, --isStaged  Checks only staged files, and will throw error if config found
+  -v, --version   show CLI version
+
+ALIASES
+  $ iwa check
+  $ iwa c
+```
+
+_See code: [src/commands/check.ts](https://github.com/chrispcode/iwa-cli/blob/v1.0.0/src/commands/check.ts)_
 
 ## `iwa generate [INPUT] [OUTPUT]`
 

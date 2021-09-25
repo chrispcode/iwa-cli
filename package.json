@@ -28,7 +28,9 @@
     "@oclif/plugin-help": "^3.2.2",
     "chalk": "^4.1.0",
     "cosmiconfig": "^7.0.0",
-    "lodash.pick": "^4.4.0"
+    "lodash.pick": "^4.4.0",
+    "staged-git-files": "^1.2.0",
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.14.0",
@@ -66,8 +68,9 @@
     "lint": "eslint . --ext .ts --config .eslintrc",
     "lint:fix": "eslint . --ext .ts --config .eslintrc --fix",
     "version": "oclif-dev readme && git add README.md",
-    "test:cli:gen": "node ./bin/run gen example/index.html",
-    "test:cli:rm": "node ./bin/run rm example/index.html",
-    "test:cli:help": "node ./bin/run --help"
+    "iwa:gen": "iwa gen example/index.html",
+    "iwa:rm": "iwa rm example/index.html",
+    "iwa:check": "iwa check example/index.html",
+    "iwa:check:staged": "iwa check -s example/index.html"
   }
 }
