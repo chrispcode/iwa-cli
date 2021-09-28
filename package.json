@@ -1,7 +1,7 @@
 {
   "name": "iwa-cli",
   "description": "An ImmutableWebApp CLI using oclif and cosmiconfig",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Kristiyan Serafimov (chrispcode)",
   "repository": "chrispcode/iwa-cli",
   "files": [
