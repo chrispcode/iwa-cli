@@ -129,4 +129,29 @@ describe('iwa generate', () => {
 
     expect(result2).toBe(expected2);
   });
+
+  it('should overide iwarc value using process.env', async () => {
+    const overrideValue = 'OVERRIDE_VALUE';
+    process.env.KEY = overrideValue;
+    await GenerateCommand.run(['./test/index.html', '-c', iwarcFile, '-e', 'production']);
+
+    const result = fs.readFileSync(entryFilePath, {
+      encoding: 'utf-8',
+    });
+
+    const expected = html`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+        <body>
+          <script id="iwa">window.env = {"KEY":"${overrideValue}"}</script>
+        </body>
+      </html>
+    `;
+
+    expect(result).toBe(expected);
+  });
 });

@@ -28,7 +28,6 @@
     "@oclif/plugin-help": "^3.2.2",
     "chalk": "^4.1.0",
     "cosmiconfig": "^7.0.0",
-    "lodash.pick": "^4.4.0",
     "staged-git-files": "^1.2.0"
   },
   "devDependencies": {
